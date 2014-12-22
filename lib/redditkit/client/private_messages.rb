@@ -29,11 +29,12 @@ module RedditKit
       # @param message [String] The text of the message.
       # @param recipient [String, RedditKit::User] The recipient of the message.
       # @option options [String] :subject The subject of the message.
+      # @option options [String] :from_sr The subreddit to send the message from.
       # @option options [String] :captcha_identifier A CAPTCHA identifier to send with the message, if the current user is required to fill one out.
       # @option options [String] :captcha_value The value of the CAPTCHA to send with the message, if the current user is required to fill one out.
       def send_message(message, recipient, options = {})
         username = extract_string(recipient, :username)
-        parameters = { :to => username, :text => message, :subject => options[:subject], :captcha => options[:captcha_value], :iden => options[:captcha_identifier] }
+        parameters = { :to => username, :text => message, :subject => options[:subject], :from_sr => options[:from_sr], :captcha => options[:captcha_value], :iden => options[:captcha_identifier] }
 
         post('api/compose', parameters)
       end
