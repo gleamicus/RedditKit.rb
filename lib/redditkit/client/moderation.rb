@@ -34,9 +34,10 @@ module RedditKit
       # Removes a link or comment.
       #
       # @param object [String, RedditKit::Comment, RedditKit::Link] The full name of a link/comment, a RedditKit::Comment, or a RedditKit::Link.
-      def remove(object)
+      # @param spam [Boolean] Whether to mark the message as spam when removing. Defaults to true.
+      def remove(object, spam = true)
         full_name = extract_full_name object
-        post 'api/remove', { :id => full_name, :api_type => :json }
+        post 'api/remove', { :id => full_name, :spam => spam, :api_type => :json }
       end
 
       # Ignores the reports on a link or comment.
