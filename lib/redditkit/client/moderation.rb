@@ -26,9 +26,10 @@ module RedditKit
       # Approves an unmoderated link.
       #
       # @param link [String, RedditKit::Link] A link's full name, or a RedditKit::Link.
-      def approve(link)
+      # @param spam [Boolean] Whether to mark the message as spam when removing. Defaults to true.
+      def approve(link, spam = true)
         full_name = extract_full_name link
-        post 'api/approve', { :id => full_name, :api_type => :json }
+        post 'api/approve', { :id => full_name, :api_type => :json, :spam => spam }
       end
 
       # Removes a link or comment.
