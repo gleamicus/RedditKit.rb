@@ -34,6 +34,9 @@ module RedditKit
     # The time of the link's most recent edit, or nil if it has never been edited.
     attr_reader :edited
 
+    # Whether the link has been gilded.
+    attr_reader :gilded
+
     # Whether the current user has hidden this link.
     attr_reader :hidden
 
@@ -51,6 +54,9 @@ module RedditKit
 
     # A hash contains details for embedding the content in a web page.
     attr_reader :media_embed
+
+    # Moderator reports. This will be an array of arrays.
+    attr_reader :mod_reports
 
     # The number of comments on the link.
     attr_reader :num_comments
@@ -91,12 +97,17 @@ module RedditKit
     # The link's URL. This will be a link to the post on reddit if the link is a self post.
     attr_reader :url
 
+    # User reports for the link. This will be an array of arrays.
+    attr_reader :user_reports
+
     # Whether the link has been visited by the current user. Requires that the current user have reddit gold.
     attr_reader :visited
 
     alias_method :approved?, :approved_by
     alias_method :banned?, :banned_by
     alias_method :nsfw?, :over_18
+    alias_method :removed?, :banned_by
+    alias_method :removed_by, :banned_by
     alias_method :self_post?, :is_self
     alias_method :sticky?, :stickied
     alias_method :subreddit_full_name, :subreddit_id
@@ -138,6 +149,20 @@ module RedditKit
 
     def permalink
       @permalink ||= URI.join('http://www.reddit.com', URI.encode(@attributes[:permalink])).to_s
+    end
+
+    # User and moderator reports.
+    #
+    # @return [Array]
+    def reports
+      user_reports.concat(mod_reports)
+    end
+
+    # Whether the comment has any reports.
+    #
+    # @return [Boolean]
+    def reports?
+      !reports.empty?
     end
 
     # Returns the short URL for a link.

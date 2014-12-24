@@ -20,12 +20,20 @@ module RedditKit
     attr_reader :distinguished
     attr_reader :edited
     attr_reader :gilded
+    attr_reader :link_author
     attr_reader :link_id
+    attr_reader :mod_reports
     attr_reader :num_reports
+    attr_reader :saved
     attr_reader :score_hidden
     attr_reader :subreddit
     attr_reader :subreddit_id
+    attr_reader :user_reports
 
+
+    alias_method :banned?, :banned_by
+    alias_method :removed?, :banned_by
+    alias_method :removed_by, :banned_by
     alias_method :text, :body
     alias_method :posted_at, :created_at
 
@@ -50,5 +58,20 @@ module RedditKit
     def replies?
       !replies.empty?
     end
+
+    # User and moderator reports.
+    #
+    # @return [Array]
+    def reports
+      user_reports.concat(mod_reports)
+    end
+
+    # Whether the comment has any reports.
+    #
+    # @return [Boolean]
+    def reports?
+      !reports.empty?
+    end
+
   end
 end
