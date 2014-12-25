@@ -47,6 +47,16 @@ module RedditKit
         post('api/read_message', parameters)
       end
 
+      # Gets a Message object from its full name.
+      #
+      # @param message_full_name [String] The full name of the message.
+      # @return [RedditKit::PrivateMessage]
+      # @note This method will return nil if there is not a user currently signed in.
+      def message(message_full_name)
+        messages = objects_from_response(:get, 'message/messages.json', { :mid => message_full_name })
+        messages.first
+      end
+
       # Marks a message as unread.
       #
       # @param message [String, RedditKit::PrivateMessage] A private message's full name, or a RedditKit::PrivateMessage.
