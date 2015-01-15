@@ -44,8 +44,8 @@ module RedditKit
 
     # The replies to a comment.
     def replies
-      replies_listing = @attributes[:replies]
-      return [] if replies_listing.blank?
+      replies_listing = attributes[:replies]
+      return [] if replies_listing.empty?
 
       replies_array = replies_listing[:data][:children]
 
